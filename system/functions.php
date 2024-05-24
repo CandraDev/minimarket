@@ -14,31 +14,31 @@ function query($query){
 
 function deleteMov($id){
     global $conn;
-    $query = "DELETE FROM movies WHERE `movies`.`id` = $id";
+    $query = "DELETE FROM products WHERE `movies`.`id` = $id";
     mysqli_query($conn, $query);
     return mysqli_affected_rows($conn);
 }
 
 function addMov($data){
     global $conn;
-    $title = htmlspecialchars($data['title']);
-    $year = htmlspecialchars($data['year']);
-    $genre = htmlspecialchars($data['genre']);
-    $runtime = htmlspecialchars($data['runtime']);
+    $prdName = htmlspecialchars($data['prd-nama']);
+    $prdPrice = htmlspecialchars($data['prd-harga']);
+    $genre = htmlspecialchars($data['prd-kategori']);
 
-    $poster = upload();
-    if( !$poster ){
+    $thumb = upload();
+    if( !$thumb ){
         return false;
     }
 
-    $query = "INSERT INTO movies 
+    $query = "INSERT INTO products 
         VALUES
-        ('', '$title', $year, '$genre', '$runtime', '$poster')";
+        ('', '$prdName', $prdPrice, '$genre', '$thumb')";
 
     mysqli_query($conn, $query);
 
     return mysqli_affected_rows($conn);
 }
+
 
 function updateMov($data){
     global $conn;
@@ -55,7 +55,7 @@ function updateMov($data){
         $poster = upload();
     }
 
-    $query = "UPDATE movies SET 
+    $query = "UPDATE products SET 
                 title = '$title', 
                 year = $year,
                 genre = '$genre',
@@ -70,6 +70,7 @@ function updateMov($data){
 }
 
 function upload() {
+
     // [filename] => Array
     // (
     //     [name] => MyFile.jpg
@@ -109,7 +110,7 @@ function upload() {
 }
 
 function searchMov($keyword) {
-    $query = "SELECT * FROM movies WHERE title LIKE '%$keyword%'
+    $query = "SELECT * FROM products WHERE title LIKE '%$keyword%'
                 OR year LIKE '%$keyword%' 
                 OR genre LIKE '%$keyword%'";
         
@@ -147,31 +148,32 @@ function userRegist($data){
     return mysqli_affected_rows($conn);
 }
 
-function checkLogin(){
-    if(isset($_COOKIE["key"])){
-        checkCookie($_COOKIE["key"], $_COOKIE["id"]);
-    }
-
-    if(!isset($_SESSION["login"])){
+function checkAdminLogin(){
+    if(!isset($_SESSION["adm-login"])){
         header("Location: login.php");
         exit;
     } 
 }
 
-function checkCookie($key, $id){
+function checkCookie(){
     global $conn;
+
+    if(!isset($_COOKIE['id']) || !isset($_COOKIE['key'])){
+        return false;
+    }
+    $id = $_COOKIE['id'];
 
     $result = mysqli_query($conn, "SELECT * FROM users WHERE id = $id");
     $row = mysqli_fetch_assoc($result);
-
-
-    if($key === hash("sha256", $row["username"])){
-        $_SESSION["login"] = true;
-    } 
-    else {
-        unset($_SESSION["login"]);
+    
+    if ($_COOKIE['key'] === hash("sha256", $row["username"])){
+        $_SESSION["user-login"] = true;
+    }  else {
+        unset($_SESSION["user-login"]);
+        header("Location: ../index.php");
     }
 }
+
 
 function userLogin($data){
     global $conn;
@@ -187,13 +189,13 @@ function userLogin($data){
     if(mysqli_num_rows($result) === 1){
         if(password_verify($password, $row["password"])){
             if(isset($data["remember"])){
-                setcookie("key", hash("sha256", $username), time() + 60 * 60 * 24);
-                setcookie("id", $row["id"], time() + 60 * 60 * 24);
+                setcookie("key", hash("sha256", $username), time() + 60 * 60 * 24, "/");
+                setcookie("id", $row["id"], time() + 60 * 60 * 24, "/");
             }
-            $_SESSION["login"] = true;
+            $_SESSION["user-login"] = true;
         }
         
-        checkLogin();
+        checkCookie();
         return true;
     }
 }
