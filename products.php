@@ -87,9 +87,10 @@ if(isset($_POST['search'])){
     </nav>
     <main class="container-fluid mt-5 p-5 bg-light pt-5 pb-5">
         <div class="row mx-auto">
-            <?php $categories = query("SELECT * FROM `categories`"); foreach($categories as $cat) : ?>
+            <?php if(isset($_GET["category"])){ $catName = $_GET["category"];};
+            $categories = query("SELECT * FROM `categories` WHERE `cat-name` = '$catName' "); foreach($categories as $cat) : ?>
             <?php $catIcon = $cat['cat-icon'];?>
-            <h1 class="mb-4 mt-5"><i class="<?=$catIcon?> me-4"></i><?=$cat['cat-name'];?></h1>
+            <h1 class="mb-4 mt-5"><i class="<?='$catIcon'?> me-4"></i><?=$cat['cat-name'];?></h1>
             <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = 'Makanan'"); foreach($products as $prd) :?>
             <div class="col-md-2 g-8">
                 <div class="card mb-3 mx-auto shadow-sm" style="max-width: 540px;">
@@ -118,8 +119,6 @@ if(isset($_POST['search'])){
                 </div>
             </div>
             <?php endforeach;?>
-            <?php $catName = $cat['cat-name']; ?>
-            <a href="products.php?<?="category=$catName"?>">Cek Selengkapnya</a>
             <?php endforeach; ?>
         </div>
     </main>
