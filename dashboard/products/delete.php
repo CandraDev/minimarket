@@ -1,14 +1,15 @@
 <?php
-require 'functions.php';
-checkLogin();
+ require '../../system/functions.php';
+ session_start();
+ checkAdminLogin("../index.php");
 
 
 $id = $_GET['id'];
 
-if(deleteMov($id) > 0){
+if(deleteProduct($id) > 0){
     echo "
     <script>
-        alert('Movie has successfully deleted!');
+        alert('Product has successfully deleted!');
         document.location.href = 'index.php';
     </script>
     ";

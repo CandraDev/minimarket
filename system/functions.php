@@ -12,18 +12,19 @@ function query($query){
     return $rows;
 }
 
-function deleteMov($id){
+function deleteProduct($id){
     global $conn;
-    $query = "DELETE FROM products WHERE `movies`.`id` = $id";
+    $query = "DELETE FROM products WHERE `products`.`id` = $id";
     mysqli_query($conn, $query);
     return mysqli_affected_rows($conn);
 }
 
-function addMov($data){
+function addProduct($data){
     global $conn;
     $prdName = htmlspecialchars($data['prd-nama']);
     $prdPrice = htmlspecialchars($data['prd-harga']);
-    $genre = htmlspecialchars($data['prd-kategori']);
+    $prdCategory = htmlspecialchars($data['prd-kategori']);
+    $prdDetails = htmlspecialchars($data['prd-details']);
 
     $thumb = upload();
     if( !$thumb ){
@@ -32,7 +33,7 @@ function addMov($data){
 
     $query = "INSERT INTO products 
         VALUES
-        ('', '$prdName', $prdPrice, '$genre', '$thumb')";
+        ('', '$prdName', $prdPrice, '$prdCategory', '$thumb', '$prdDetails')";
 
     mysqli_query($conn, $query);
 
@@ -40,27 +41,27 @@ function addMov($data){
 }
 
 
-function updateMov($data){
+function updateProduct($data){
     global $conn;
     $id = $data['id'];
-    $title = htmlspecialchars($data['title']);
-    $year = htmlspecialchars($data['year']);
-    $genre = htmlspecialchars($data['genre']);
-    $runtime = htmlspecialchars($data['runtime']);
-    $oldPoster = htmlspecialchars($data['oldPoster']);
+    $prdName = htmlspecialchars($data['prd-nama']);
+    $prdPrice = htmlspecialchars($data['prd-harga']);
+    $prdCategory = htmlspecialchars($data['prd-kategori']);
+    $prdDetails = htmlspecialchars($data['prd-details']);
+    $oldThumb = htmlspecialchars($data['thumb']);
     
-    if($_FILES['poster']['error'] === 4){
-        $poster = $oldPoster;
+    if($_FILES['thumb']['error'] === 4){
+        $thumb = $oldThumb;
     } else {
-        $poster = upload();
+        $thumb = upload();
     }
 
     $query = "UPDATE products SET 
-                title = '$title', 
-                year = $year,
-                genre = '$genre',
-                runtime = '$runtime',
-                poster = '$poster'
+                prd-name = '$prdName', 
+                prd-price = $prdPrice,
+                prd-kategori = '$prdCategory',
+                prd-thumb = '$thumb',
+                prd-details = '$prdDetails'
                 WHERE id = $id
             ";
 
@@ -105,7 +106,7 @@ function upload() {
         return false;
     }
     $newFileName = uniqid() . "." . $fileExtension;
-    move_uploaded_file($tmpName, 'img/' . $newFileName);
+    move_uploaded_file($tmpName, '../../img/' . $newFileName);
     return $newFileName;
 }
 
@@ -148,9 +149,16 @@ function userRegist($data){
     return mysqli_affected_rows($conn);
 }
 
-function checkAdminLogin(){
+function checkAdminLogin($url){
     if(!isset($_SESSION["adm-login"])){
-        header("Location: login.php");
+        header("Location: $url");
+        exit;
+    } 
+}
+
+function checkUserLogin($url){
+    if(!isset($_SESSION["user-login"])){
+        header("Location: $url");
         exit;
     } 
 }
@@ -197,6 +205,7 @@ function userLogin($data){
                 setcookie("id", $row["id"], time() + 60 * 60 * 24, "/");
             }
             $_SESSION["user-login"] = true;
+            $_SESSION["username"] = $username;
         }
         
         checkCookie();

@@ -90,7 +90,7 @@ if(isset($_POST['search'])){
             <?php $categories = query("SELECT * FROM `categories`"); foreach($categories as $cat) : ?>
             <?php $catIcon = $cat['cat-icon'];?>
             <h1 class="mb-4 mt-5"><i class="<?=$catIcon?> me-4"></i><?=$cat['cat-name'];?></h1>
-            <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = 'Makanan'"); foreach($products as $prd) :?>
+            <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = 'Makanan' LIMIT 0, 6"); foreach($products as $prd) :?>
             <div class="col-md-2 g-8">
                 <div class="card mb-3 mx-auto shadow-sm" style="max-width: 540px;">
                     <div class="row-12">

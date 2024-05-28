@@ -41,7 +41,7 @@ if(isset($_POST['login'])){
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav  me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">User Homepage</a>
+                        <a class="nav-link active" aria-current="page" href="index.php">Dashboard</a>
                     </li>
                 </ul>
             </div>
@@ -50,7 +50,7 @@ if(isset($_POST['login'])){
     <main class="container-fluid bg-light d-flex align-items-center justify-content-center position-absolute h-100">
         <div class="container shadow p-5 bg-body" style="border-radius: 2rem;">
             <div class="row text-dark">
-                <div class="col-md-9 mx-auto mb-3">
+                <div class="col-sm-12 mx-auto mb-3">
                     <h1 class="h3 fw-bold text-center">Admin Login</h1>
                 </div>
                 <form action="" method="post" class="">
@@ -66,7 +66,9 @@ if(isset($_POST['login'])){
                             <p class="text-danger">Incorrect username or password!</p>
                         <?php endif; ?>
                     </div>
-                    
+                    <div class="col-md-9 mx-auto mb-5">
+                        <p>Not an administrator? Return to <a href="../">user homepage.</a></p>
+                    </div>
                     <div class="col-md-9 mx-auto">
                         <button type="submit" name="login" class="form-control btn btn-primary btn-block">Log
                             In</button>
