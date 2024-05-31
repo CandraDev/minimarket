@@ -9,14 +9,14 @@
         echo "
             <script>
                 alert('Product has successfully added!');
-                document.location.href = 'index.php';
+                document.location.href = '../index.php';
             </script>
             ";
     } else {
         echo "
             <script>
                 alert('Data has failed to be added!');
-                document.location.href = 'index.php';
+                document.location.href = '../index.php';
             </script>
             ";
     }
@@ -33,11 +33,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/4.0/examples/sticky-footer/sticky-footer.css" rel="stylesheet">
-    <title>My Movies List</title>
+    <title>Klik Indomaret</title>
+    <link rel="shortcut icon" href="../assets/ui/Untitled.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
     nav {
-        background: url(../assets/ui/bg_header.jpg);
+        background: url(../../assets/ui/bg_header.jpg);
     }
     </style>
 
@@ -103,10 +104,38 @@
         </form>
     </main>
 
-    <footer class="footer bg-warning text-light text-center p-1">
-        <div class="container">
-            <h1 class="h3">Made with PHP</h1>
+    <footer class="footer bg-body text-center">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <img src="../../assets/ui/logo.webp" alt="" height="50px" class="mb-3">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <!-- Facebook -->
+                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #3b5998;"
+                    href="#!" role="button"><i class="bi bi-facebook"></i></a>
+
+                <!-- Google -->
+                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #dd4b39;"
+                    href="#!" role="button"><i class="bi bi-google"></i></a>
+
+                <!-- Instagram -->
+                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #ac2bac;"
+                    href="#!" role="button"><i class="bi bi-instagram"></i></a>
+
+                <!-- Whatsapp -->
+                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: lime;"
+                    href="#!" role="button"><i class="bi bi-whatsapp"></i></a>
+            </section>
+            <!-- Section: Social media -->
         </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2024 Copyright:
+            <a class="text-body" href="index.html">Klik Indomaret</a>
+        </div>
+        <!-- Copyright -->
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

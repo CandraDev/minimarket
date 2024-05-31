@@ -25,6 +25,11 @@ if(isset($_POST['register-submit'])){
     }
 }
 
+// if searchbutton clicked...
+if(isset($_GET["keywords"])){
+    $products = searchProducts($_GET["keywords"]); 
+}
+
     ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +51,7 @@ if(isset($_POST['register-submit'])){
 
 </head>
 
-<body class="bg-bdoy">
+<body class="bg-light">
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-warning shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="index.php"><img src="assets/ui/logo.webp" style="width: 7rem;"></a>
@@ -65,21 +70,18 @@ if(isset($_POST['register-submit'])){
                             <i class="bi bi-basket"></i> Kategori
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="products.php?category=Makanan"><i
-                                        class="bi bi-egg-fried"></i> Makanan</a></li>
-                            <li><a class="dropdown-item" href="products.php?category=Minuman"><i
-                                        class="bi bi-cup-straw"></i> Minuman</a></li>
-                            <li><a class="dropdown-item" href="products.php?category=Kesehatan"><i
-                                        class="bi bi-prescription2"></i> Kesehatan</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=Makanan"><i class="bi bi-egg-fried"></i> Makanan</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=Minuman"><i class="bi bi-cup-straw"></i> Minuman</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=Kesehatan"><i class="bi bi-prescription2"></i> Kesehatan</a></li>
                         </ul>
                     </li>
                 </ul>
                 <div class="navbar-nav me-auto my-2 my-lg-0 ">
                     <form action="search.php" method="get" class="d-flex mx-auto">
                         <input name="keywords" class="form-control me-2 shadow-sm" style="width: 50vw;" type="text"
-                            placeholder="Mau beli apa hari ini?">
-                        <button title="Cari" class="btn btn-light shadow-sm" type="submit"><i class="bi bi-search"
-                                style="color:#ffbf00;"></i></button>
+                            placeholder="Mau beli apa hari ini?" aria-label="Search">
+                        <button name="search" title="Cari" class="btn btn-light shadow-sm" type="submit"><i
+                                class="bi bi-search" style="color:#ffbf00;"></i></button>
                     </form>
                 </div>
                 <div class="navbar-nav">
@@ -106,97 +108,11 @@ if(isset($_POST['register-submit'])){
         </div>
     </nav>
     <main class="container-fluid mt-5 p-5 bg-light pt-5 pb-5">
-        <div class="alert alert-primary  alert-dismissible fade show" role="alert">
-            <i class="bi bi-info-circle-fill"></i> Mulai 17 Mei 2024, pengembalian dana untuk transaksi dengan
-            pembayaran ShopeePay, GoPay, Jenius Pay, dan OVO akan dialihkan sementara ke Saldo Klik.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner" style="border-radius: 20px; height: 30rem;">
-                <div class="carousel-item active" data-bs-interval="10000">
-                    <img src="assets/ui/hero_bnr_indomie-goreng-29-mei1.webp" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item" data-bs-interval="2000">
-                    <img src="assets/ui/belanja-untung-revisi.webp" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/ui/hero_bnr_fun-gajian_25_mei.webp" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/ui/hero_bnr_kental-manis-harga-manis_29-mei.webp" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/ui/hero_bnr_payday-saro-roti.webp" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/ui/nivea-hansaplast-revisimei3.webp" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/ui/stay-safe-revisi-mei3.webp" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/ui/hero-beli-banyak-v1.webp" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="assets/ui/hero_bnr_travel-fest-1-mei-24.webp" class="d-block w-100" alt="...">
-                </div>
-            </div>
-            <button class="carousel-control-prev  b-50" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-primary" aria-hidden="true"
-                    style="border-radius: 50px;"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next  b-50" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon bg-primary " aria-hidden="true"
-                    style="border-radius: 50px;"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <div class="card alert-primary  mt-4" style="border-radius: 15px;">
-            <div class="card-body">
-                <blockquote class="blockquote d-flex align-items-center justify-content-around mb-0 ">
-                    <h5>Produk Lainnya</h5>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-joystick"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-backpack2-fill"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-bank"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-fuel-pump-fill"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-gift-fill"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-houses-fill"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-lungs-fill"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-virus"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-windows"></i></h1>
-                    </button>
-                    <button type="button" class="btn botn btn-light">
-                        <h1><i class="bi bi-usb-plug-fill"></i></h1>
-                    </button>
-                </blockquote>
-            </div>
-        </div>
         <div class="row mx-auto">
-            <?php $categories = query("SELECT * FROM `categories`"); foreach($categories as $cat) : ?>
-            <?php $catName = $cat['cat-name'];?>
-            <?php $catIcon = $cat['cat-icon'];?>
-            <h1 class="mb-4 mt-5"><i class="<?=$catIcon?> me-4"></i><?=$cat['cat-name'];?></h1>
-            <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = '$catName' LIMIT 0, 6"); foreach($products as $prd) :?>
+            <?php if(count($products) === 0) : ?>
+                <h1 class="mb-4 mt-5">Product not Found!</h1>
+            <?php endif; ?>
+            <?php foreach($products as $prd) :?>
             <div class="col-md-2 g-8">
                 <div class="card mb-3 mx-auto shadow-sm" style="max-width: 540px;">
                     <div class="row-12">
@@ -211,12 +127,12 @@ if(isset($_POST['register-submit'])){
                                     <?=number_format($prd['prd-harga']);?></span>
                                 <div class="row">
                                     <div class="col-12 mx-auto">
-                                        <?php if(isset($_SESSION['user-login'])) {?>
-                                        <a href="buy.php?id=<?=$prd['id']?>" class="btn btn-sm btn-primary w-100">Beli
-                                            Sekarang</a>
+                                        <?php if(isset($_SESSION['user-login'])){?>
+                                        <a href="buy.php?id=<?=$prd['id']?>" class="btn btn-sm btn-primary w-100"><i class="bi bi-cart"></i> Beli Sekarang</a>
                                         <?php } else { ?>
                                         <button type="button" class="btn btn-sm btn-primary w-100"
-                                            data-bs-toggle="modal" data-bs-target="#userLogin">
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#userLogin">
                                             <i class="bi bi-cart"></i> Beli Sekarang
                                         </button>
                                         <?php } ?>
@@ -228,9 +144,6 @@ if(isset($_POST['register-submit'])){
                 </div>
             </div>
             <?php endforeach;?>
-            <?php $catName = $cat['cat-name']; ?>
-            <a href="products.php?<?="category=$catName"?>">Cek Selengkapnya</a>
-            <?php endforeach; ?>
         </div>
     </main>
 
@@ -238,46 +151,65 @@ if(isset($_POST['register-submit'])){
         <!-- Grid container -->
         <div class="container p-4 pb-0">
             <img src="assets/ui/logo.webp" alt="" height="50px" class="mb-3">
-            <!-- Section: Social media -->
-            <section class="mb-4">
-                <!-- Facebook -->
-                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #3b5998;"
-                    href="#!" role="button"><i class="bi bi-facebook"></i></a>
+          <!-- Section: Social media -->
+          <section class="mb-4">
+            <!-- Facebook -->
+            <a
+            data-mdb-ripple-init
+              class="btn text-white btn-floating m-1"
+              style="background-color: #3b5998;"
+              href="#!"
+              role="button"
+              ><i class="bi bi-facebook"></i></a>
+      
+            <!-- Google -->
+            <a
+              data-mdb-ripple-init
+              class="btn text-white btn-floating m-1"
+              style="background-color: #dd4b39;"
+              href="#!"
+              role="button"
+              ><i class="bi bi-google"></i></a>
+      
+            <!-- Instagram -->
+            <a
+              data-mdb-ripple-init
+              class="btn text-white btn-floating m-1"
+              style="background-color: #ac2bac;"
+              href="#!"
+              role="button"
+              ><i class="bi bi-instagram"></i></a>
 
-                <!-- Google -->
-                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #dd4b39;"
-                    href="#!" role="button"><i class="bi bi-google"></i></a>
-
-                <!-- Instagram -->
-                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #ac2bac;"
-                    href="#!" role="button"><i class="bi bi-instagram"></i></a>
-
-                <!-- Whatsapp -->
-                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: lime;"
-                    href="#!" role="button"><i class="bi bi-whatsapp"></i></a>
-            </section>
-            <!-- Section: Social media -->
+            <!-- Whatsapp -->
+            <a
+              data-mdb-ripple-init
+              class="btn text-white btn-floating m-1"
+              style="background-color: lime;"
+              href="#!"
+              role="button"
+              ><i class="bi bi-whatsapp"></i></a>
+          </section>
+          <!-- Section: Social media -->
         </div>
         <!-- Grid container -->
-
+      
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-            © 2024 Copyright:
-            <a class="text-body" href="index.html">Klik Indomaret</a>
+          © 2024 Copyright:
+          <a class="text-body" href="index.html">Klik Indomaret</a>
         </div>
         <!-- Copyright -->
-    </footer>
-
+      </footer>
 
     <div class="modal fade" id="userLogin" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-5">
+            <div class="modal-content pt-5 pb-5">
                 <div class="row text-dark">
                     <div class="col-md-9 mx-auto mb-3">
                         <h1 class="h3 fw-bold text-center">User Login</h1>
                     </div>
 
-                    <form action="" method="post">
+                    <form action="system/verifyuser.php" method="post" class="">
                         <div class="col-md-9 mx-auto mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="username" name="username" class="form-control" id="username"
@@ -298,7 +230,7 @@ if(isset($_POST['register-submit'])){
                             <?php endif; ?>
                         </div>
                         <div class="col-md-9 mx-auto">
-                            <button type="submit" name="login-submit"
+                            <button type="login-submit" name="login"
                                 class="form-control btn btn-primary btn-block">Login</button>
                         </div>
                     </form>
@@ -306,10 +238,6 @@ if(isset($_POST['register-submit'])){
             </div>
         </div>
     </div>
-
-
-
-
     <div class="modal fade" id="userRegister" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-5">
@@ -346,43 +274,11 @@ if(isset($_POST['register-submit'])){
             </div>
         </div>
     </div>
-    <div class="modal fade" id="userLogin" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-5">
-                <div class="row text-dark">
-                    <div class="col-md-9 mx-auto mb-3">
-                        <h1 class="h3 fw-bold text-center">User Login</h1>
-                    </div>
 
-                    <form action="" method="post">
-                        <div class="col-md-9 mx-auto mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="username" name="username" class="form-control" id="username"
-                                aria-describedby="emailHelp" autocomplete="off">
-                        </div>
-                        <div class="col-md-9 mx-auto mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" id="password">
-                        </div>
-                        <div class="col-md-9 mx-auto mb-3">
-                            <input type="checkbox" name="remember" class="form-check-input" id="remember-me">
-                            <label class="form-check-label" for="remember-me">Remember me</label>
-                        </div>
-                        <div class="col-md-9 mx-auto mb-5">
-                            <p>Don't have one? <a href="register.php">register here.</a></p>
-                            <?php if(isset($error)): ?>
-                            <p class="text-danger fst-italic">Incorrect username or password!</p>
-                            <?php endif; ?>
-                        </div>
-                        <div class="col-md-9 mx-auto">
-                            <button type="submit" name="login-submit"
-                                class="form-control btn btn-primary btn-block">Login</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">

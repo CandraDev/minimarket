@@ -5,9 +5,29 @@ session_start();
 
 checkCookie();
 
+if(isset($_POST['login-submit'])){
+    userLogin($_POST);
+}
+
+if(isset($_POST['register-submit'])){
+    if(userRegist($_POST) > 0 ){
+        echo "
+            <script>
+                alert('User has successfully registered!');
+            </script>
+            ";
+    } else {
+        echo "
+            <script>
+                alert('User has failed to be registered!');
+            </script>
+            ";
+    }
+}
+
 // if searchbutton clicked...
 if(isset($_POST['search'])){
-    $products = searchMov($_POST["keywords"]); 
+    $products = searchProducts($_POST["keywords"]); 
 }
 
     ?>
@@ -20,7 +40,8 @@ if(isset($_POST['search'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/4.0/examples/sticky-footer/sticky-footer.css" rel="stylesheet">
-    <title>My Movies List</title>
+    <title>Klik Indomaret</title>
+    <link rel="shortcut icon" href="assets/ui/Untitled.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
     nav {
@@ -49,9 +70,9 @@ if(isset($_POST['search'])){
                             <i class="bi bi-basket"></i> Kategori
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-egg-fried"></i> Makanan</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-cup-straw"></i> Minuman</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-prescription2"></i> Kesehatan</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=Makanan"><i class="bi bi-egg-fried"></i> Makanan</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=Minuman"><i class="bi bi-cup-straw"></i> Minuman</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=Kesehatan"><i class="bi bi-prescription2"></i> Kesehatan</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -77,7 +98,8 @@ if(isset($_POST['search'])){
                         data-bs-target="#userLogin">
                         Masuk
                     </a>
-                    <a href="#" class="btn btn-light btn-outline-primary me-2 shadow-sm">
+                    <a href="#" class="btn btn-light btn-outline-primary me-2 shadow-sm" data-bs-toggle="modal"
+                        data-bs-target="#userRegister">
                         Daftar
                     </a>
                     <?php } ?>
@@ -91,7 +113,7 @@ if(isset($_POST['search'])){
             $categories = query("SELECT * FROM `categories` WHERE `cat-name` = '$catName' "); foreach($categories as $cat) : ?>
             <?php $catIcon = $cat['cat-icon'];?>
             <h1 class="mb-4 mt-5"><i class="<?='$catIcon'?> me-4"></i><?=$cat['cat-name'];?></h1>
-            <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = 'Makanan'"); foreach($products as $prd) :?>
+            <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = '$catName'"); foreach($products as $prd) :?>
             <div class="col-md-2 g-8">
                 <div class="card mb-3 mx-auto shadow-sm" style="max-width: 540px;">
                     <div class="row-12">
@@ -106,11 +128,15 @@ if(isset($_POST['search'])){
                                     <?=number_format($prd['prd-harga']);?></span>
                                 <div class="row">
                                     <div class="col-12 mx-auto">
+                                        <?php if(isset($_SESSION['user-login'])) {?>
+                                        <a href="buy.php?id=<?=$prd['id']?>" class="btn btn-sm btn-primary w-100"><i class="bi bi-cart"></i> Beli Sekarang</a>
+                                        <?php } else {?>
                                         <button type="button" class="btn btn-sm btn-primary w-100"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#<?php if(isset($_SESSION['user-login'])) {echo'userBuy';}else{echo'userLogin';} ?>">
+                                            data-bs-target="#userLogin">
                                             <i class="bi bi-cart"></i> Beli Sekarang
                                         </button>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -123,10 +149,38 @@ if(isset($_POST['search'])){
         </div>
     </main>
 
-    <footer class="footer bg-warning text-light text-center p-1">
-        <div class="container">
-            <h1 class="h3">Made with PHP</h1>
+    <footer class="footer bg-body text-center">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <img src="assets/ui/logo.webp" alt="" height="50px" class="mb-3">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <!-- Facebook -->
+                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #3b5998;"
+                    href="#!" role="button"><i class="bi bi-facebook"></i></a>
+
+                <!-- Google -->
+                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #dd4b39;"
+                    href="#!" role="button"><i class="bi bi-google"></i></a>
+
+                <!-- Instagram -->
+                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #ac2bac;"
+                    href="#!" role="button"><i class="bi bi-instagram"></i></a>
+
+                <!-- Whatsapp -->
+                <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: lime;"
+                    href="#!" role="button"><i class="bi bi-whatsapp"></i></a>
+            </section>
+            <!-- Section: Social media -->
         </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2024 Copyright:
+            <a class="text-body" href="index.html">Klik Indomaret</a>
+        </div>
+        <!-- Copyright -->
     </footer>
 
     <div class="modal fade" id="userLogin" tabindex="-1" aria-hidden="true">
@@ -166,41 +220,36 @@ if(isset($_POST['search'])){
             </div>
         </div>
     </div>
-
-
-
-
-    <div class="modal fade" id="userBuy" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="userRegister" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-5">
                 <div class="row text-dark">
                     <div class="col-md-9 mx-auto mb-3">
-                        <h1 class="h3 fw-bold text-center">Beli Sekarang</h1>
+                        <h1 class="h3 fw-bold text-center">User Register</h1>
                     </div>
 
                     <form action="" method="post">
                         <div class="col-md-9 mx-auto mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="username" name="username" class="form-control" id="username"
-                                aria-describedby="emailHelp" autocomplete="off">
+                                autocomplete="off">
+                        </div>
+                        <div class="col-md-9 mx-auto mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" id="email" autocomplete="off">
                         </div>
                         <div class="col-md-9 mx-auto mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" name="password" class="form-control" id="password">
                         </div>
                         <div class="col-md-9 mx-auto mb-3">
-                            <input type="checkbox" name="remember" class="form-check-input" id="remember-me">
-                            <label class="form-check-label" for="remember-me">Remember me</label>
+                            <label for="password2" class="form-label">Confirm Password</label>
+                            <input type="password" name="password2" class="form-control" id="password2">
                         </div>
-                        <div class="col-md-9 mx-auto mb-5">
-                            <p>Don't have one? <a href="register.php">register here.</a></p>
-                            <?php if(isset($error)): ?>
-                            <p class="text-danger fst-italic">Incorrect username or password!</p>
-                            <?php endif; ?>
-                        </div>
+
                         <div class="col-md-9 mx-auto">
-                            <button type="buy-submit" name="login"
-                                class="form-control btn btn-primary btn-block">Login</button>
+                            <button type="submit" name="register-submit"
+                                class="form-control btn btn-primary btn-block">Register</button>
                         </div>
                     </form>
                 </div>

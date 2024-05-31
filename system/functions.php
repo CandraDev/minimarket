@@ -50,19 +50,19 @@ function updateProduct($data){
     $prdDetails = htmlspecialchars($data['prd-details']);
     $oldThumb = htmlspecialchars($data['thumb']);
     
-    if($_FILES['thumb']['error'] === 4){
+    if($_FILES['prd-thumb']['error'] === 4){
         $thumb = $oldThumb;
     } else {
         $thumb = upload();
     }
 
-    $query = "UPDATE products SET 
-                prd-name = '$prdName', 
-                prd-price = $prdPrice,
-                prd-kategori = '$prdCategory',
-                prd-thumb = '$thumb',
-                prd-details = '$prdDetails'
-                WHERE id = $id
+    $query = "UPDATE `products` SET 
+                `prd-nama` = '$prdName', 
+                `prd-harga` = '$prdPrice',
+                `prd-kategori` = '$prdCategory',
+                `prd-thumb` = '$thumb',
+                `prd-details` = '$prdDetails'
+                WHERE id = '$id'
             ";
 
     mysqli_query($conn, $query);
@@ -81,10 +81,10 @@ function upload() {
     //     [size] => 98174
     // )
     
-    $fileName = $_FILES['poster']['name'];
-    $fileSize = $_FILES['poster']['size'];
-    $error = $_FILES['poster']['error'];
-    $tmpName = $_FILES['poster']['tmp_name'];
+    $fileName = $_FILES['prd-thumb']['name'];
+    $fileSize = $_FILES['prd-thumb']['size'];
+    $error = $_FILES['prd-thumb']['error'];
+    $tmpName = $_FILES['prd-thumb']['tmp_name'];
     
     if( $error === 4 ){
         echo "<script>
@@ -110,12 +110,47 @@ function upload() {
     return $newFileName;
 }
 
-function searchMov($keyword) {
-    $query = "SELECT * FROM products WHERE title LIKE '%$keyword%'
-                OR year LIKE '%$keyword%' 
-                OR genre LIKE '%$keyword%'";
+function searchProducts($keyword) {
+    global $conn;
+
+    $query = "SELECT * FROM `products` WHERE `prd-nama` LIKE '%$keyword%'
+                OR `prd-kategori` LIKE '%$keyword%'";
         
     return query($query);
+}
+
+function orderProduct($data){
+    global $conn;
+
+    $username = $data['username'];
+    $prdName = $data['prd-nama'];
+    $prdPrice = $data['prd-harga'];
+    $prdQty = $data['ord-qty'];
+    $ordAddress = $data['ord-address'];
+    $prdPrice *= $prdQty;
+
+    $query = "INSERT INTO `orders` 
+        VALUES
+        ('', '$prdName', $prdQty, '$username', '$ordAddress', $prdPrice, 'UNPAID')";
+    
+    mysqli_query($conn, $query);
+
+    return mysqli_affected_rows($conn);
+}
+
+function payProduct($data){
+    global $conn;
+
+    $id = $data['id'];
+
+    $query = "UPDATE `orders` SET
+                `ord-status` = 'PAID'
+                WHERE `ord-id` = $id
+            ";
+
+    mysqli_query($conn, $query);
+
+    return mysqli_affected_rows($conn);
 }
 
 
@@ -124,8 +159,9 @@ function userRegist($data){
     $username = strtolower(stripslashes($data['username']));
     $password = mysqli_real_escape_string($conn, $data['password']);
     $password2 = mysqli_real_escape_string($conn, $data['password2']);
+    $email = strtolower(stripslashes($data['email']));
 
-    $result = mysqli_query($conn, "SELECT username FROM users WHERE username = '$username'");
+    $result = mysqli_query($conn, "SELECT `username` FROM `users` WHERE `username` = '$username'");
 
     if(mysqli_fetch_assoc($result)){
         echo "
@@ -144,7 +180,7 @@ function userRegist($data){
     }
 
     $password = password_hash($password, PASSWORD_DEFAULT);
-    mysqli_query($conn, "INSERT INTO users VALUES ('', '$username', '$password')");
+    mysqli_query($conn, "INSERT INTO users VALUES ('', '$username', '$password', '$email')");
 
     return mysqli_affected_rows($conn);
 }

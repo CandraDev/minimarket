@@ -27,7 +27,8 @@ if(isset($_POST['login'])){
         background: url(../assets/ui/bg_header.jpg);
     }
     </style>
-    <title>My Movies List - Login</title>
+    <title>Klik Indomaret</title>
+    <link rel="shortcut icon" href="../assets/ui/Untitled.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -77,9 +78,9 @@ if(isset($_POST['login'])){
             </div>
         </div>
     </main>
-    <footer class="footer shadow-sm bg-warning text-light text-center p-1">
+    <footer class="footer shadow-sm bg-warning text-light text-center p-3">
         <div class="container">
-            <h1 class="h3">Made with PHP</h1>
+            <h1 class="h3">Admin Access Only</h1>
         </div>
     </footer>
 </body>
