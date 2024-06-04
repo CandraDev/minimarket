@@ -6,11 +6,11 @@ session_start();
 checkCookie();
 
 if(isset($_POST['login-submit'])){
-    userLogin($_POST);
+    $userMenu->userLogin($_POST);
 }
 
 if(isset($_POST['register-submit'])){
-    if(userRegist($_POST) > 0 ){
+    if($userMenu->userRegist($_POST) > 0 ){
         echo "
             <script>
                 alert('User has successfully registered!');
@@ -192,11 +192,11 @@ if(isset($_POST['register-submit'])){
             </div>
         </div>
         <div class="row mx-auto">
-            <?php $categories = query("SELECT * FROM `categories`"); foreach($categories as $cat) : ?>
+            <?php $categories = $database->query("SELECT * FROM `categories`"); foreach($categories as $cat) : ?>
             <?php $catName = $cat['cat-name'];?>
             <?php $catIcon = $cat['cat-icon'];?>
             <h1 class="mb-4 mt-5"><i class="<?=$catIcon?> me-4"></i><?=$cat['cat-name'];?></h1>
-            <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = '$catName' LIMIT 0, 6"); foreach($products as $prd) :?>
+            <?php $products = $database->query("SELECT * FROM `products` WHERE `prd-kategori` = '$catName' LIMIT 0, 6"); foreach($products as $prd) :?>
             <div class="col-md-2 g-8">
                 <div class="card mb-3 mx-auto shadow-sm" style="max-width: 540px;">
                     <div class="row-12">

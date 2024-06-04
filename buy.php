@@ -1,10 +1,10 @@
 <?php
  require 'system/functions.php';
  session_start();
- checkUserLogin("index.php");
+ $userMenu->checkUserLogin("index.php");
 
  if(isset($_GET['id'])){
-    $prdID = $_GET['id']; $prd = query("SELECT * FROM `products` WHERE id = $prdID")[0];
+    $prdID = $_GET['id']; $prd = $database->query("SELECT * FROM `products` WHERE id = $prdID")[0];
  } else {
     header("Location: index.php"); 
     exit;
@@ -12,7 +12,7 @@
 
 
  if(isset($_POST["buy-submit"])){
-    if( orderProduct($_POST) > 0 ) {
+    if( $productMenu->orderProduct($_POST) > 0 ) {
         echo "
             <script>
                 alert('Product has successfully ordered!');
@@ -132,10 +132,10 @@
             <div class="container-fluid px-4 px-lg-5 mt-5">
                 <div class="row mx-auto">
                     <?php $prdName = $prd['prd-kategori'];?>
-                    <?php $categories = query("SELECT * FROM `categories` WHERE `cat-name` = '$prdName'"); foreach($categories as $cat) : ?>
+                    <?php $categories = $database->query("SELECT * FROM `categories` WHERE `cat-name` = '$prdName'"); foreach($categories as $cat) : ?>
                     <?php $catIcon = $cat['cat-icon'];?>
                     <h1 class="mb-4 mt-5"><i class="<?=$catIcon?> me-4"></i>Produk Serupa</h1>
-                    <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = '$prdName' LIMIT 0, 6"); foreach($products as $prd) :?>
+                    <?php $products = $database->query("SELECT * FROM `products` WHERE `prd-kategori` = '$prdName' LIMIT 0, 6"); foreach($products as $prd) :?>
                     <div class="col-md-2 g-8">
                         <div class="card mb-3 mx-auto shadow-sm" style="max-width: 540px;">
                             <div class="row-12">
@@ -230,7 +230,7 @@
                     </div>
 
                     <form action="" method="post">
-                        <input type="hidden" name="username" value="<?=$_SESSION['username']?>">
+                        <input type="hidden" name="username" value="<?php if(isset($_SESSION['username'])){echo $_SESSION['username'];}else{echo $_COOKIE['username'];}; ?>">
                         <input type="hidden" name="prd-nama" value="<?=$prd['prd-nama']?>">
                         <input type="hidden" name="prd-harga" value="<?=$prd['prd-harga']?>">
                         <div class="col-md-9 mx-auto mb-3">

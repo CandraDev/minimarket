@@ -3,7 +3,7 @@
 require '../system/functions.php';
 
 if(isset($_GET['id'])){
-    if(payProduct($_GET) > 0){
+    if($productMenu->payProduct($_GET) > 0){
         echo "
             <script>
              alert('Payment confirmed!');

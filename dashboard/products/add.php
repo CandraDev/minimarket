@@ -1,11 +1,11 @@
 <?php
  require '../../system/functions.php';
  session_start();
- checkAdminLogin("../index.php");
+ $adminMenu->checkAdminLogin("../index.php");
 
  if(isset($_POST["submit"])){
 
-    if( addProduct($_POST) > 0 ) {
+    if( $productMenu->addProduct($_POST) > 0 ) {
         echo "
             <script>
                 alert('Product has successfully added!');
@@ -89,7 +89,7 @@
                 <div class="col">
                         <label for="prd-kategori">Kategori Produk: </label>
                         <select name="prd-kategori" class="form-select">
-                            <?php $category = query("SELECT * FROM categories"); foreach($category as $cat): ?>
+                            <?php $category = $database->query("SELECT * FROM categories"); foreach($category as $cat): ?>
                                 <option value="<?=$cat["cat-name"]?>"><?=$cat["cat-name"]?></option>
                             <?php endforeach;?>
                         </select>

@@ -3,7 +3,7 @@ require '../system/functions.php';
 session_start();
 
 if(isset($_POST['login'])){
-    if(adminLogin($_POST) > 0){
+    if($adminMenu->adminLogin($_POST) > 0){
         header("Location: index.php");
         exit;
     } else {

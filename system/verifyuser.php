@@ -3,7 +3,7 @@
 require 'functions.php';
 session_start();
 
-if(userLogin($_POST) > 0 ){
+if($userMenu->userLogin($_POST) > 0 ){
     header("Location: ../index.php"); die();
 } else {    
     header("Location: ../index.php"); die();

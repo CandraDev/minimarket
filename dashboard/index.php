@@ -1,9 +1,9 @@
 <?php
  require '../system/functions.php';
  session_start();
- checkAdminLogin("login.php");
+ $adminMenu->checkAdminLogin("login.php");
 
-$products = query("SELECT * FROM `products`");
+$products = $database->query("SELECT * FROM `products`");
 
 ?>
 

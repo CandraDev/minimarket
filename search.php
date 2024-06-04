@@ -6,11 +6,11 @@ session_start();
 checkCookie();
 
 if(isset($_POST['login-submit'])){
-    userLogin($_POST);
+    $userMenu->userLogin($_POST);
 }
 
 if(isset($_POST['register-submit'])){
-    if(userRegist($_POST) > 0 ){
+    if($userMenu->userRegist($_POST) > 0 ){
         echo "
             <script>
                 alert('User has successfully registered!');
@@ -27,7 +27,7 @@ if(isset($_POST['register-submit'])){
 
 // if searchbutton clicked...
 if(isset($_GET["keywords"])){
-    $products = searchProducts($_GET["keywords"]); 
+    $products = $productMenu->searchProducts($_GET["keywords"]); 
 }
 
     ?>

@@ -6,11 +6,11 @@ session_start();
 checkCookie();
 
 if(isset($_POST['login-submit'])){
-    userLogin($_POST);
+    $userMenu->userLogin($_POST);
 }
 
 if(isset($_POST['register-submit'])){
-    if(userRegist($_POST) > 0 ){
+    if($userMenu->userRegist($_POST) > 0 ){
         echo "
             <script>
                 alert('User has successfully registered!');
@@ -27,7 +27,7 @@ if(isset($_POST['register-submit'])){
 
 // if searchbutton clicked...
 if(isset($_POST['search'])){
-    $products = searchProducts($_POST["keywords"]); 
+    $products = $productMenu->searchProducts($_POST["keywords"]); 
 }
 
     ?>
@@ -110,10 +110,10 @@ if(isset($_POST['search'])){
     <main class="container-fluid mt-5 p-5 bg-light pt-5 pb-5">
         <div class="row mx-auto">
             <?php if(isset($_GET["category"])){ $catName = $_GET["category"];};
-            $categories = query("SELECT * FROM `categories` WHERE `cat-name` = '$catName' "); foreach($categories as $cat) : ?>
+            $categories = $database->query("SELECT * FROM `categories` WHERE `cat-name` = '$catName' "); foreach($categories as $cat) : ?>
             <?php $catIcon = $cat['cat-icon'];?>
             <h1 class="mb-4 mt-5"><i class="<?='$catIcon'?> me-4"></i><?=$cat['cat-name'];?></h1>
-            <?php $products = query("SELECT * FROM `products` WHERE `prd-kategori` = '$catName'"); foreach($products as $prd) :?>
+            <?php $products = $database->query("SELECT * FROM `products` WHERE `prd-kategori` = '$catName'"); foreach($products as $prd) :?>
             <div class="col-md-2 g-8">
                 <div class="card mb-3 mx-auto shadow-sm" style="max-width: 540px;">
                     <div class="row-12">
