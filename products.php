@@ -77,7 +77,7 @@ if(isset($_POST['search'])){
                     </li>
                 </ul>
                 <div class="navbar-nav me-auto my-2 my-lg-0 ">
-                    <form action="" method="post" class="d-flex mx-auto">
+                    <form action="search.php" method="get" class="d-flex mx-auto">
                         <input name="keywords" class="form-control me-2 shadow-sm" style="width: 50vw;" type="text"
                             placeholder="Mau beli apa hari ini?" aria-label="Search">
                         <button name="search" title="Cari" class="btn btn-light shadow-sm" type="submit"><i
