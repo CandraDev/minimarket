@@ -28,7 +28,7 @@ class userMenu extends Database {
         }
     
         $password = password_hash($password, PASSWORD_DEFAULT);
-        mysqli_query($this->conn, "INSERT INTO users VALUES ('', '$username', '$password', '$email')");
+        mysqli_query($this->conn, "INSERT INTO users VALUES (NULL, '$username', '$password', '$email')");
     
         return mysqli_affected_rows($this->conn);
     }
